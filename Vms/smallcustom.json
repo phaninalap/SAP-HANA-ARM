@@ -11,7 +11,9 @@
             "allowedValues": [
                 "SAP HANA PLATFORM EDITION 2.0 SPS01 REV 10 (51052030)",
                 "SAP HANA PLATFORM EDITION 2.0 SPS02 (51052325)",
-                "SAP HANA PLATFORM EDITION 2.0 SPS03 REV30 (51053061)"
+                "SAP HANA PLATFORM EDITION 2.0 SPS03 REV30 (51053061)",
+                "SAP HANA PLATFORM EDITION 2.0 SPS04 REV40 (51053787)",
+                "SAP HANA PLATFORM EDITION 2.0 SPS05 REV52 (51054623)"
             ]
         },   
         "vmName": {
@@ -41,7 +43,8 @@
             "allowedValues": [
                 "SLES for SAP 12 SP3",
                 "SLES for SAP 12 SP2",
-                "RHEL 7.2 for SAP HANA"
+                "RHEL 7.2 for SAP HANA",
+                "RHEL 8.4 for SAP HANA"
             ]
         },
         "vmUserName": {
@@ -134,19 +137,19 @@
         "subnetRef": "[parameters('HANAsubnetRef')]",
         "OperatingSystemSpec": {
             "imagePublisher": "[if (contains(parameters('OperatingSystem'),'SLES'),'SUSE','RedHat')]",
-            "imageOffer": "[if (contains(parameters('OperatingSystem'),'SLES'),if (contains(parameters('SubscriptionEmail'),'@'),'SLES-SAP-BYOS','SLES-SAP'),'RHEL-SAP-HANA')]",
-            "sku": "[if (contains(parameters('OperatingSystem'),'12 SP3'),'12-SP3',if (contains(parameters('OperatingSystem'),'12 SP2'),'12-SP2','7.2'))]"
+            "imageOffer": "[if (contains(parameters('OperatingSystem'),'SLES'),if (contains(parameters('SubscriptionEmail'),'@'),'SLES-SAP-BYOS','SLES-SAP'),'RHEL-SAP-APPS')]",
+            "sku": "[if (contains(parameters('OperatingSystem'),'12 SP3'),'12-SP3',if (contains(parameters('OperatingSystem'),'12 SP2'),'12-SP2',if (contains(parameters('OperatingSystem'),'8.4'),'8_4',if (contains(parameters('OperatingSystem'),'7.2'),'7.2'))))]"
         },
         "diskConfig": "[variables(concat('diskConfig_', parameters('vmSize')))]",
-        "diskConfig_Standard_M64s": {
-            "shared": 1023,
+        },
+        "diskConfig": "[variables(concat('diskConfig_', parameters('vmSize')))]",
+        "diskConfig_Standard_M32ls": {
+            "shared": 511,
             "sap": 63,
-            "backup1": 1023,
-            "backup2": 1023,
-            "data1": 1023,
-            "data2": 1023,
-            "data3": 1023,
-            "data4": 1023,
+            "backup1": 511,
+            "data1": 511,
+            "data2": 511,
+            "data3": 511,
             "log1": 511,
             "log2": 511
         }
@@ -245,22 +248,6 @@
         },
         {
             "type": "Microsoft.Compute/disks",
-            "name": "[concat(parameters('vmName'),'-backup2')]",
-            "apiVersion": "2018-04-01",
-            "location": "[resourceGroup().location]",
-            "sku": {
-                "name": "Standard_LRS",
-                "tier": "Standard"
-            },
-            "properties": {
-                "creationData": {
-                    "createOption": "Empty"
-                },
-                "diskSizeGB": "[variables('diskConfig').backup2]"
-            }
-        },
-        {
-            "type": "Microsoft.Compute/disks",
             "name": "[concat(parameters('vmName'),'-data1')]",
             "apiVersion": "2018-04-01",
             "location": "[resourceGroup().location]",
@@ -305,22 +292,6 @@
                     "createOption": "Empty"
                 },
                 "diskSizeGB": "[variables('diskConfig').data3]"
-            }
-        },
-        {
-            "type": "Microsoft.Compute/disks",
-            "name": "[concat(parameters('vmName'),'-data4')]",
-            "apiVersion": "2018-04-01",
-            "location": "[resourceGroup().location]",
-            "sku": {
-                "name": "Premium_LRS",
-                "tier": "Premium"
-            },
-            "properties": {
-                "creationData": {
-                    "createOption": "Empty"
-                },
-                "diskSizeGB": "[variables('diskConfig').data4]"
             }
         },
         {
@@ -378,11 +349,9 @@
                 "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-shared'))]",
                 "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-sap'))]",
                 "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-backup1'))]",
-                "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-backup2'))]",
                 "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data1'))]",
                 "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data2'))]",
                 "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data3'))]",
-                "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data4'))]",
                 "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-log1'))]",
                 "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-log2'))]",
                 "[resourceId('Microsoft.Compute/availabilitySets', parameters('AvailSetName'))]"
@@ -435,39 +404,25 @@
                             "lun": 3,
                             "createOption": "Attach",
                             "managedDisk": {
-                                "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-backup2'))]"
+                                "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data1'))]"
                             }
                         },
                         {
                             "lun": 4,
                             "createOption": "Attach",
                             "managedDisk": {
-                                "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data1'))]"
+                                "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data2'))]"
                             }
                         },
                         {
                             "lun": 5,
                             "createOption": "Attach",
                             "managedDisk": {
-                                "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data2'))]"
-                            }
-                        },
-                        {
-                            "lun": 6,
-                            "createOption": "Attach",
-                            "managedDisk": {
                                 "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data3'))]"
                             }
                         },
                         {
-                            "lun": 7,
-                            "createOption": "Attach",
-                            "managedDisk": {
-                                "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data4'))]"
-                            }
-                        },
-                        {
-                            "lun": 8,
+                            "lun": 6,
                             "createOption": "Attach",
                             "writeAcceleratorEnabled": "true",
                             "managedDisk": {
@@ -475,7 +430,7 @@
                             }
                         },
                         {
-                            "lun": 9,
+                            "lun": 7,
                             "createOption": "Attach",
                             "writeAcceleratorEnabled": "true",
                             "managedDisk": {
