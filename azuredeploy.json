@@ -53,42 +53,42 @@
         },   
         "NetworkName": {
             "type": "string",
-            "defaultValue": "ra-sap-hana-vnet",
+            "defaultValue": "AZSUB-EMA-ENA-APP0584-FINANCESAPREPORTING-NPD-VNET",
             "metadata": {
                 "description": "The HANA VNET"
             }
         },
         "addressPrefixes": {
             "type": "string",
-            "defaultValue": "10.0.0.0/16",
+            "defaultValue": "10.235.200.96/27",
             "metadata": {
                 "description": "The HANA VNET prefix"
             }
         },
         "HANASubnetName": {
             "type": "string",
-            "defaultValue": "SAPDataSubnet",
+            "defaultValue": "default-1",
             "metadata": {
                 "description": "The data subnet name"
             }
         },
         "HANASubnetPrefix": {
             "type": "string",
-            "defaultValue": "10.0.5.0/24",
+            "defaultValue": "10.235.200.104/29",
             "metadata": {
                 "description": "The data subnet prefix"
             }
         },
         "ManagementSubnetName": {
             "type": "string",
-            "defaultValue": "SAPMgmtSubnet",
+            "defaultValue": "default-0",
             "metadata": {
                 "description": "The management subnet name"
             }
         },
         "ManagementSubnetPrefix": {
             "type": "string",
-            "defaultValue": "10.0.6.0/24",
+            "defaultValue": "10.235.200.96/29",
             "metadata": {
                 "description": "The management subnet prefix"
             }
@@ -162,7 +162,7 @@
           "metadata": {
             "description": "IP Address for the HANA VM when Static IP Allocation Method has been selected"
           },
-          "defaultValue": "10.0.5.4"
+          "defaultValue": "10.235.200.104"
         },
         "AvailSetName": {
           "type": "string",
