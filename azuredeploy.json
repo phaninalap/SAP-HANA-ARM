@@ -146,7 +146,7 @@
             "metadata": {
                 "description": "Type in the name of the Resource Group for an existing network or leave no to use the same one"
             },
-            "defaultValue": "no"
+            "defaultValue": "AZRG-ALL-ITS-VNET-SYS"
         },
         "IPAllocationMethod": {
             "type": "string",
