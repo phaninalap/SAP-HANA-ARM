@@ -199,6 +199,7 @@
     "vmName": "[toLower(parameters('vmName'))]",
     "baseUri": "https://raw.githubusercontent.com/phaninalap/SAP-HANA-ARM/master/",
     "smallUri": "[concat(variables('baseUri'),'Vms/small.json')]",
+    "smallcustomUri": "[concat(variables('baseUri'),'Vms/smallcustom.json')]",
     "mediumUri": "[concat(variables('baseUri'),'Vms/medium.json')]",
     "largeUri": "[concat(variables('baseUri'),'Vms/large.json')]",
     "extralargeUri": "[concat(variables('baseUri'),'Vms/extralarge.json')]",
@@ -242,7 +243,7 @@
         }
       },
           { 
-            "condition": "[or(or(equals(variables('vmSize'),'Standard_E16s_v3'),equals(variables('vmSize'),'Standard_E32s_v3')), or(equals(variables('vmSize'),'Standard_M32ls'), or(equals(variables('vmSize'),'Standard_E64s_v3'),equals(variables('vmSize'),'Standard_GS5')))]",
+            "condition": "[or(or(equals(variables('vmSize'),'Standard_E16s_v3'),equals(variables('vmSize'),'Standard_E32s_v3')), or(equals(variables('vmSize'),'Standard_E64s_v3'),equals(variables('vmSize'),'Standard_GS5')))]",
             "apiVersion": "2016-09-01",
             "name": "[concat('SmallLinkedTemplate', parameters('VMName'))]",
             "type": "Microsoft.Resources/deployments",
@@ -253,6 +254,71 @@
                 "mode": "Incremental",
                 "templateLink": {
                     "uri": "[variables('smallUri')]"
+                },
+                "parameters": {
+                    "HanaVersion": {
+                        "value": "[parameters('HanaVersion')]"
+                    },               
+                    "vmName": {
+                        "value": "[parameters('vmName')]"
+                    },
+                    "customUri": {
+                        "value": "[parameters('customUri')]"
+                    },
+                    "HANAsubnetRef": {
+                        "value": "[variables('HANAsubnetRef')]"
+                    },
+                    "OperatingSystem": {
+                        "value": "[parameters('OperatingSystem')]"
+                    },
+                    "vmUserName": {
+                        "value": "[parameters('vmUserName')]"
+                    },
+                    "vmPassword": {
+                        "value": "[parameters('vmPassword')]"
+                    },
+                    "hanaSid": {
+                        "value": "[parameters('hanaSid')]"
+                    },
+                    "hanaNumber": {
+                        "value": "[parameters('hanaNumber')]"
+                    },
+                    "vmSize": {
+                        "value": "[variables('vmSize')]"
+                    },
+                    "IPAllocationMethod":{
+                        "value": "[parameters('IPAllocationMethod')]"
+                    },
+                    "StaticIP":{
+                        "value": "[parameters('StaticIP')]"
+                    },
+                    "AvailSetName": {
+                        "value": "[parameters('AvailSetName')]"
+                      },                             
+                    "SubscriptionEmail":{
+                        "value": "[parameters('SubscriptionEmail')]"
+                    },
+                    "SubscriptionID":{
+                        "value": "[parameters('SubscriptionID')]"
+                    },
+                    "SMTUri":{
+                        "value": "[parameters('SMTUri')]"
+                    }
+                }
+            }
+        },
+	{ 
+            "condition": "[equals(variables('vmSize'),'Standard_M32ls')]",
+            "apiVersion": "2016-09-01",
+            "name": "[concat('SmallCustomLinkedTemplate', parameters('VMName'))]",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('NetworkName'))]"
+              ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('smallcustomUri')]"
                 },
                 "parameters": {
                     "HanaVersion": {
