@@ -96,7 +96,7 @@
         },
         "customURI": {
             "type": "string",
-	    "defaultValue": "https://testnalap.blob.core.windows.net/sapmedia",
+	    "defaultValue": "https://sapmedia.blob.core.windows.net/hanamedia",
             "metadata": {
                 "description": "URI where SAP bits are uploaded"
             }
