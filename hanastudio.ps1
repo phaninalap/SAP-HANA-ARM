@@ -30,7 +30,7 @@ param (
     Invoke-WebRequest $hanastudioUri -OutFile $hanastudiodest
     
     write-host "installing 7zip and extracting JAVA"
-    cd $jrepath
+    cd $7zdest
     .\7z.msi /quiet
     cd "C:\Program Files\7-Zip\"
     .\7z.exe e "C:\Program Files\serverjre-9.0.4_windows-x64_bin.tar.gz" "-oC:\Program Files"
