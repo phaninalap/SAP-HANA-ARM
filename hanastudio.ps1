@@ -32,7 +32,7 @@ param (
     Invoke-WebRequest $hanastudioUri -OutFile $hanastudiodest
     
     write-host "installing 7zip and extracting JAVA"
-    cd $7zdest
+    cd $jrepath
     .\7z.msi /quiet
     cd "C:\Program Files\7-Zip\"
     .\7z.exe e "C:\Program Files\serverjre-9.0.4_windows-x64_bin.tar.gz" "-oC:\Program Files"
@@ -43,7 +43,7 @@ param (
     .\putty-64bit-0.76-installer.msi /quiet
     
     write-host "extracting and installing HANA Studio"
-    .\sapcar.exe -xfv IMC_STUDIO2_255_0-80000323.SAR
+    .\sapcar.exe -xvf IMC_STUDIO2_255_0-80000323.SAR
     
     set PATH=%PATH%C:\Program Files\jdk-9.0.4\bin;
     set HDB_INSTALLER_TRACE_FILE=C:\Users\testuser\Documents\hdbinst.log
