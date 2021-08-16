@@ -402,12 +402,16 @@ SAPBITSDIR="/hana/data/sapbits"
 
 if [ "${hanapackage}" = "51054623" ]
 then
+  echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
   /usr/bin/wget --quiet $Uri/${hanapackage}.ZIP
+  echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
   mkdir ${hanapackage}
   cd ${hanapackage}
+  echo "hana extract start" >> /tmp/parameter.txt
   unzip ../${hanapackage}.ZIP
+  echo "hana extract end" >> /tmp/parameter.txt
   cd $SAPBITSDIR
   #add additional requirement
   zypper install -y libatomic1
@@ -432,10 +436,10 @@ fi
 
 #!/bin/bash
 cd /hana/data/sapbits
-echo "hana download start" >> /tmp/parameter.txt
+echo "hana config download start" >> /tmp/parameter.txt
 # /usr/bin/wget --quiet $Uri/SapBits/md5sums
 /usr/bin/wget --quiet "https://raw.githubusercontent.com/phaninalap/SAP-HANA-ARM/master/hdbinst.cfg"
-echo "hana download end" >> /tmp/parameter.txt
+echo "hana config download end" >> /tmp/parameter.txt
 
 date >> /tmp/testdate
 cd /hana/data/sapbits
