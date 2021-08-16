@@ -4,12 +4,13 @@ param (
     )
     
     #Get the bits for the HANA installation and copy them to C:\SAPbits\SAP_HANA_STUDIO\
+    $baseURI = "https://sapmedia.blob.core.windows.net/hanamedia"
     $hanadest = "C:\SapBits"
     $sapcarUri = $baseUri + "/SAPCAR.EXE" 
     $hanastudioUri = $baseUri + "/IMC_STUDIO2_255_0-80000323.SAR" 
     $jreUri = $baseUri + "/serverjre-9.0.4_windows-x64_bin.tar.gz"
     $puttyUri = "https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.76-installer.msi"
-    $7zUri = "http://www.7-zip.org/a/7z1701-x64.msi"
+    $7zUri = "https://www.7-zip.org/a/7z1900-x64.msi"
     $sapcardest = "C:\SapBits\SAP_HANA_STUDIO\sapcar.exe"
     $hanastudiodest = "C:\SapBits\SAP_HANA_STUDIO\IMC_STUDIO2_255_0-80000323.SAR"
     $jredest = "C:\Program Files\serverjre-9.0.4_windows-x64_bin.tar.gz"
@@ -23,6 +24,7 @@ param (
         New-item -Path $hanapath -itemtype directory
     }
     write-host "downloading files"
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-WebRequest $jreUri -OutFile $jredest
     Invoke-WebRequest $7zUri -OutFile $7zdest
     Invoke-WebRequest $puttyUri -OutFile $puttydest
