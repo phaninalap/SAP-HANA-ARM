@@ -402,6 +402,7 @@ SAPBITSDIR="/hana/data/sapbits"
 
 if [ "${hanapackage}" = "51054623" ]
 then
+  echo "${hanapackage}" >> /tmp/parameter.txt
   echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
   /usr/bin/wget --quiet $Uri/${hanapackage}.ZIP
