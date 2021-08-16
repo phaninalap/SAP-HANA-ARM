@@ -379,24 +379,9 @@
                         {
                             "lun": 5,
                             "createOption": "Attach",
-                            "managedDisk": {
-                                "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-data3'))]"
-                            }
-                        },
-                        {
-                            "lun": 6,
-                            "createOption": "Attach",
                             "writeAcceleratorEnabled": "true",
                             "managedDisk": {
                                 "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-log1'))]"
-                            }
-                        },
-                        {
-                            "lun": 7,
-                            "createOption": "Attach",
-                            "writeAcceleratorEnabled": "true",
-                            "managedDisk": {
-                                "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-log2'))]"
                             }
                         }
                     ]
