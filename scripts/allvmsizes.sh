@@ -40,6 +40,10 @@ else
       then
         hanapackage="51053787"
       else
+        if [ "$HANAVER" = "SAP HANA PLATFORM EDITION 2.0 SPS05 REV52 (51054623)" ]
+        then
+        hanapackage="51054623"
+        else
         echo "not 51053061, default to 51052325"
         hanapackage="51052325"
       fi
@@ -134,8 +138,6 @@ if [ $VMSIZE == "Standard_M32ls" ]; then
   echo "Creating partitions and physical volumes"
   pvcreate -ff -y  /dev/disk/azure/scsi1/lun6
   pvcreate -ff -y  /dev/disk/azure/scsi1/lun7
-  pvcreate -ff -y /dev/disk/azure/scsi1/lun8
-  pvcreate -ff -y /dev/disk/azure/scsi1/lun9
 
   echo "logicalvols start" >> /tmp/parameter.txt
   #shared volume creation
@@ -150,23 +152,21 @@ if [ $VMSIZE == "Standard_M32ls" ]; then
 
   #backup volume creation
   backupvg1lun="/dev/disk/azure/scsi1/lun2"
-  backupvg2lun="/dev/disk/azure/scsi1/lun3"
-  vgcreate backupvg $backupvg1lun $backupvg2lun
+  vgcreate backupvg $backupvg1lun
   lvcreate -l 100%FREE -n backuplv backupvg 
 
   #data volume creation
-  datavg1lun="/dev/disk/azure/scsi1/lun4"
-  datavg2lun="/dev/disk/azure/scsi1/lun5"
-  datavg3lun="/dev/disk/azure/scsi1/lun6"
-  datavg4lun="/dev/disk/azure/scsi1/lun7"
-  vgcreate datavg $datavg1lun $datavg2lun $datavg3lun $datavg4lun
-  PHYSVOLUMES=4
+  datavg1lun="/dev/disk/azure/scsi1/lun3"
+  datavg2lun="/dev/disk/azure/scsi1/lun4"
+  datavg3lun="/dev/disk/azure/scsi1/lun5"
+  vgcreate datavg $datavg1lun $datavg2lun $datavg3lun
+  PHYSVOLUMES=3
   STRIPESIZE=64
   lvcreate -i$PHYSVOLUMES -I$STRIPESIZE -l 100%FREE -n datalv datavg
 
   #log volume creation
-  logvg1lun="/dev/disk/azure/scsi1/lun8"
-  logvg2lun="/dev/disk/azure/scsi1/lun9"
+  logvg1lun="/dev/disk/azure/scsi1/lun6"
+  logvg2lun="/dev/disk/azure/scsi1/lun7"
   vgcreate logvg $logvg1lun $logvg2lun
   PHYSVOLUMES=2
   STRIPESIZE=32
@@ -378,8 +378,20 @@ else
     then
       hanapackage="51053061"
     else
-      echo "not 51053061, default to 51052325"
-      hanapackage="51052325"
+    echo "not 51053061"
+      if [ "$HANAVER" = "SAP HANA PLATFORM EDITION 2.0 SPS04 REV40 (51053787)" ]
+      then
+        hanapackage="51053787"
+      else
+      echo "not 51053787"
+        if [ "$HANAVER" = "SAP HANA PLATFORM EDITION 2.0 SPS05 REV52 (51054623)" ]
+        then
+        hanapackage="51054623"
+        else
+          echo "not 51054623, default to 51052325"
+          hanapackage="51052325"
+        fi
+      fi  
     fi
   fi
 fi
@@ -388,9 +400,9 @@ fi
 #####################
 SAPBITSDIR="/hana/data/sapbits"
 
-if [ "${hanapackage}" = "51053787" ]
+if [ "${hanapackage}" = "51054623" ]
 then 
-  /usr/bin/wget --quiet $Uri/SapBits/${hanapackage}.ZIP
+  /usr/bin/wget --quiet $Uri/${hanapackage}.ZIP
   cd $SAPBITSDIR
   mkdir ${hanapackage}
   cd ${hanapackage}
@@ -420,8 +432,8 @@ fi
 #!/bin/bash
 cd /hana/data/sapbits
 echo "hana download start" >> /tmp/parameter.txt
-/usr/bin/wget --quiet $Uri/SapBits/md5sums
-/usr/bin/wget --quiet "https://raw.githubusercontent.com/AzureCAT-GSI/SAP-HANA-ARM/master/hdbinst.cfg"
+# /usr/bin/wget --quiet $Uri/SapBits/md5sums
+/usr/bin/wget --quiet "https://raw.githubusercontent.com/phaninalap/SAP-HANA-ARM/master/hdbinst.cfg"
 echo "hana download end" >> /tmp/parameter.txt
 
 date >> /tmp/testdate
