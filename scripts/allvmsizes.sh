@@ -136,8 +136,8 @@ if [ $VMSIZE == "Standard_M32ls" ]; then
   #this is the medium size
   # this assumes that 6 disks are attached at lun 0 through 5
   echo "Creating partitions and physical volumes"
-  pvcreate -ff -y  /dev/disk/azure/scsi1/lun6
-  pvcreate -ff -y  /dev/disk/azure/scsi1/lun7
+  # pvcreate -ff -y  /dev/disk/azure/scsi1/lun6
+  # pvcreate -ff -y  /dev/disk/azure/scsi1/lun7
 
   echo "logicalvols start" >> /tmp/parameter.txt
   #shared volume creation
@@ -158,17 +158,17 @@ if [ $VMSIZE == "Standard_M32ls" ]; then
   #data volume creation
   datavg1lun="/dev/disk/azure/scsi1/lun3"
   datavg2lun="/dev/disk/azure/scsi1/lun4"
-  datavg3lun="/dev/disk/azure/scsi1/lun5"
-  vgcreate datavg $datavg1lun $datavg2lun $datavg3lun
-  PHYSVOLUMES=3
+#  datavg3lun="/dev/disk/azure/scsi1/lun5"
+  vgcreate datavg $datavg1lun $datavg2lun
+  PHYSVOLUMES=2
   STRIPESIZE=64
   lvcreate -i$PHYSVOLUMES -I$STRIPESIZE -l 100%FREE -n datalv datavg
 
   #log volume creation
-  logvg1lun="/dev/disk/azure/scsi1/lun6"
-  logvg2lun="/dev/disk/azure/scsi1/lun7"
-  vgcreate logvg $logvg1lun $logvg2lun
-  PHYSVOLUMES=2
+  logvg1lun="/dev/disk/azure/scsi1/lun5"
+  #logvg2lun="/dev/disk/azure/scsi1/lun7"
+  vgcreate logvg $logvg1lun
+  PHYSVOLUMES=1
   STRIPESIZE=32
   lvcreate -i$PHYSVOLUMES -I$STRIPESIZE -l 100%FREE -n loglv logvg
   mount -t xfs /dev/logvg/loglv /hana/log 
