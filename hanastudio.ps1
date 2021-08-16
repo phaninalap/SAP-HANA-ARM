@@ -6,7 +6,7 @@ param (
     #Get the bits for the HANA installation and copy them to C:\SAPbits\SAP_HANA_STUDIO\
     $baseURI = "https://sapmedia.blob.core.windows.net/hanamedia"
     $hanadest = "C:\SapBits"
-    $sapcarUri = $baseUri + "/SAPCAR.EXE" 
+    $sapcarUri = $baseUri + "/sapcar.exe" 
     $hanastudioUri = $baseUri + "/IMC_STUDIO2_255_0-80000323.SAR" 
     $jreUri = $baseUri + "/serverjre-9.0.4_windows-x64_bin.tar.gz"
     $puttyUri = "https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.76-installer.msi"
@@ -34,16 +34,20 @@ param (
     write-host "installing 7zip and extracting JAVA"
     cd $jrepath
     .\7z.msi /quiet
+    Start-Sleep -s 120
     cd "C:\Program Files\7-Zip\"
     .\7z.exe e "C:\Program Files\serverjre-9.0.4_windows-x64_bin.tar.gz" "-oC:\Program Files"
     .\7z.exe x -y "C:\Program Files\serverjre-9.0.4_windows-x64_bin.tar" "-oC:\Program Files"
+    Start-Sleep -s 60
     
     cd $hanapath
     write-host "installing PuTTY"
     .\putty-64bit-0.76-installer.msi /quiet
+    Start-Sleep -s 60
     
     write-host "extracting and installing HANA Studio"
     .\sapcar.exe -xvf IMC_STUDIO2_255_0-80000323.SAR
+    Start-Sleep -s 60
     
     set PATH=%PATH%C:\Program Files\jdk-9.0.4\bin;
     set HDB_INSTALLER_TRACE_FILE=C:\Users\testuser\Documents\hdbinst.log
