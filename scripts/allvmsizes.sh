@@ -21,7 +21,7 @@ if [ "$SUBEMAIL" != "" ]; then
 fi
 
 #decode hana version parameter
-HANAVER=${HANAVER^^}
+# HANAVER=${HANAVER^^}
 if [ "${HANAVER}" = "SAP HANA PLATFORM EDITION 2.0 SPS01 REV 10 (51052030)" ]
 then
   hanapackage="51052030"
@@ -363,7 +363,7 @@ if [ ! -d "/hana/data/sapbits" ]
  mkdir "/hana/data/sapbits"
 fi
 
-HANAVER=${HANAVER^^}
+# HANAVER=${HANAVER^^}
 if [ "${HANAVER}" = "SAP HANA PLATFORM EDITION 2.0 SPS01 REV 10 (51052030)" ]
 then
   hanapackage="51052030"
@@ -396,6 +396,8 @@ else
   fi
 fi
 
+echo "${HANAVER}">> /tmp/parameter.txt
+echo "${hanapackage}" >> /tmp/parameter.txt
 
 #####################
 SAPBITSDIR="/hana/data/sapbits"
