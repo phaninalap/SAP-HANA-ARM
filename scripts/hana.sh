@@ -153,6 +153,14 @@ main::reboot(){
 reboot
 }
 
+main::create_swap() {
+
+sed "s/ResourceDisk.Format=n/ResourceDisk.Format=y/g" /etc/waagent.conf
+sed "s/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g" /etc/waagent.conf
+
+# service waagent restart
+}
+
 main::create_filesystem() {
   
   echo "creating sap directories" >> /tmp/parameter.txt
@@ -350,6 +358,7 @@ main::set_boot_parameters
 main::get_os_version
 main::install_packages
 main::set_kernel_parameters
+main::create_swap
 main::create_filesystem
 main::hana_media
 main::hana_config
