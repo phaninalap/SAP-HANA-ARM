@@ -110,6 +110,9 @@ main::install_packages() {
     echo "Applying updates to packages on system failed ("yum update -y"). Logon to the VM to investigate the issue."
     fi
   fi
+  rpm -Uvh https://packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm
+  yum install -y blobfuse
+  
 }
 
 main::set_kernel_parameters(){
@@ -270,6 +273,21 @@ main::hana_config() {
 main::hana_media() {
 #####################
 
+mkdir /mnt/resource/blobfusetmp -p
+chown root /mnt/resource/blobfusetmp 
+chmod 777 /mnt/resource/blobfusetmp
+mkdir /tmp/blobfuse_connection
+cd /tmp/blobfuse_connection
+touch /tmp/blobfuse_connection/fuse_connection.cfg
+chmod 600 /tmp/blobfuse_connection/fuse_connection.cfg
+
+echo "Setting blobfuse config"
+  {
+    echo "accountName app0584storagedev"
+    echo "accountKey wLZWNuJ/anvAt6F19Y9Mm6yBjmoMhNjp+55tcVSuza+keB2on+X1HLwzVH4Gw7G0iF2x9DzxEjUIkJwaEXDw2g=="
+    echo "containerName hanamedia"
+  } >> /tmp/blobfuse_connection/fuse_connection.cfg
+  
 if [ ! -d "/hana/data/sapbits" ]
  then
  mkdir "/hana/data/sapbits"
