@@ -249,9 +249,9 @@ main::hana_config() {
 
  # mkdir -p /root/.deploy
 
- HANASID="HF2"
- HANNUMBER="00"
- HANAPWD="HP1nv3nt"
+# HANASID="HF2"
+# HANNUMBER="00"
+# HANAPWD="HP1nv3nt"
  HANACOMP="server, client, studio, afl"
 
   ## create hana_install.cfg file
@@ -260,7 +260,7 @@ main::hana_config() {
 	echo "components=$HANACOMP"
 	echo "[Server]"
 	echo "sid=$HANASID"
-    echo "number=$HANNUMBER"
+    echo "number=$HANANUMBER"
     echo "sapadm_password=$HANAPWD"
     echo "password=$HANAPWD"
     echo "system_user_password=$HANAPWD"
@@ -287,18 +287,20 @@ echo "Setting blobfuse config"
     echo "accountKey wLZWNuJ/anvAt6F19Y9Mm6yBjmoMhNjp+55tcVSuza+keB2on+X1HLwzVH4Gw7G0iF2x9DzxEjUIkJwaEXDw2g=="
     echo "containerName hanamedia"
   } >> /tmp/blobfuse_connection/fuse_connection.cfg
-  
+cd / 
+mkdir sapmedia
+blobfuse /sapmedia --tmp-path=/mnt/resource/blobfusetmp  --config-file=/root/blobfuse_connection/fuse_connection.cfg -o attr_timeout=240 -o entry_timeout=240 -o negative_timeout=120 -o allow_other
+
 if [ ! -d "/hana/data/sapbits" ]
  then
  mkdir "/hana/data/sapbits"
 fi
 
-if [ "${hanapackage}" = "51054623" ]
-then
+echo "copy and extract hana pkg"
   echo "${hanapackage}" >> /tmp/parameter.txt
   echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
-  /usr/bin/wget --quiet $Uri/${hanapackage}.ZIP
+  cp /sapmedia/${hanapackage}.ZIP $SAPBITSDIR
   echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
   mkdir ${hanapackage}
@@ -307,23 +309,6 @@ then
   unzip $SAPBITSDIR/${hanapackage}.ZIP
   echo "hana extract end" >> /tmp/parameter.txt
   cd $SAPBITSDIR
-  #add additional requirement
-  #yum install -y libatomic1
-else
-  cd /hana/data/sapbits
-  /usr/bin/wget --quiet $Uri/SapBits/${hanapackage}_part1.exe
-  /usr/bin/wget --quiet $Uri/SapBits/${hanapackage}_part2.rar
-  /usr/bin/wget --quiet $Uri/SapBits/${hanapackage}_part3.rar
-  /usr/bin/wget --quiet $Uri/SapBits/${hanapackage}_part4.rar
-  cd $SAPBITSDIR
-
-  echo "hana unrar start" >> /tmp/parameter.txt
-  #!/bin/bash
-  cd $SAPBITSDIR
-  unrar  -o- x ${hanapackage}_part1.exe
-  echo "hana unrar end" >> /tmp/parameter.txt
-
-fi
 #####################
 }
 
@@ -339,10 +324,10 @@ main::hana_update() {
 
   echo "HANA Update media copy"
   cd $SAPBITSDIR
-  /usr/bin/wget --quiet $Uri/IMDB_SERVER20_056_0-80002031.SAR
-  /usr/bin/wget --quiet $Uri/IMC_STUDIO2_256_0-80000321.SAR
-  /usr/bin/wget --quiet $Uri/IMDB_AFL20_056_0-80001894.SAR
-  /usr/bin/wget --quiet $Uri/IMDB_CLIENT20_009_28-80002082.SAR
+  cp /sapmedia/IMDB_SERVER20_056_0-80002031.SAR $SAPBITSDIR
+  cp /sapmedia/IMC_STUDIO2_256_0-80000321.SAR $SAPBITSDIR
+  cp /sapmedia/IMDB_AFL20_056_0-80001894.SAR $SAPBITSDIR
+  cp /sapmedia/IMDB_CLIENT20_009_28-80002082.SAR $SAPBITSDIR
   echo "HANA Update media copy completed"
 
   if [ "$(ls $SAPBITSDIR/IMDB_SERVER*.SAR)" ]; then
