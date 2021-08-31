@@ -111,7 +111,7 @@ main::install_packages() {
   fi
   rpm -Uvh https://packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm
   yum install -y blobfuse
-  
+  yum install -y cifs-utils
 }
 
 main::set_kernel_parameters(){
@@ -272,15 +272,18 @@ main::hana_config() {
 main::hana_media() {
 #####################
 
-sudo mkdir /mnt/sapmedia
+mkdir /mnt/sapmedia
+chmod -R 777 /mnt/sapmedia
+
 if [ ! -d "/etc/smbcredentials" ]; then
-sudo mkdir /etc/smbcredentials
+mkdir /etc/smbcredentials
+chmod -R 777 /etc/smbcredentials
 fi
 if [ ! -f "/etc/smbcredentials/app0584sapstorage.cred" ]; then
-    sudo bash -c 'echo "username=app0584sapstorage" >> /etc/smbcredentials/app0584sapstorage.cred'
-    sudo bash -c 'echo "password=3PR+EGDaDP6Co2B8t/funmyz9c4xblvIM9sCrQg9/SAhLTD3GYpf+hFITzXrVABuhgDMqGIkmrbeJs1hdhcr6A==" >> /etc/smbcredentials/app0584sapstorage.cred'
+    bash -c 'echo "username=app0584sapstorage" >> /etc/smbcredentials/app0584sapstorage.cred'
+    bash -c 'echo "password=3PR+EGDaDP6Co2B8t/funmyz9c4xblvIM9sCrQg9/SAhLTD3GYpf+hFITzXrVABuhgDMqGIkmrbeJs1hdhcr6A==" >> /etc/smbcredentials/app0584sapstorage.cred'
 fi
-sudo chmod 600 /etc/smbcredentials/app0584sapstorage.cred
+chmod 777 /etc/smbcredentials/app0584sapstorage.cred
 
 sudo bash -c 'echo "//app0584sapstorage.file.core.windows.net/sapmedia /mnt/sapmedia cifs nofail,vers=3.0,credentials=/etc/smbcredentials/app0584sapstorage.cred,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
 sudo mount -t cifs //app0584sapstorage.file.core.windows.net/sapmedia /mnt/sapmedia -o 
@@ -288,6 +291,7 @@ sudo mount -t cifs //app0584sapstorage.file.core.windows.net/sapmedia /mnt/sapme
 if [ ! -d "/hana/data/sapbits" ]
  then
  mkdir "/hana/data/sapbits"
+ chmod -R 777 /hana/data/sapbits
 fi
 
 echo "copy and extract hana pkg"
