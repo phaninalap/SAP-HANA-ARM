@@ -40,8 +40,8 @@ main::set_boot_parameters() {
     grep -v GRUBLINE_LINUX_DEFAULT /etc/default/grub.bak >/etc/default/grub
     echo "GRUB_CMDLINE_LINUX_DEFAULT=\"${cmdline} transparent_hugepage=never intel_idle.max_cstate=1 processor.max_cstate=1 intel_iommu=off\"" >>/etc/default/grub
     grub2-mkconfig -o /boot/grub2/grub.cfg
-  # echo "${HOSTNAME}" >/etc/hostname
-    exit 0
+    echo "${HOSTNAME}" >/etc/hostname
+    # exit 0
   fi
 }
 
