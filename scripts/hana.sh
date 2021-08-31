@@ -230,6 +230,8 @@ main::create_filesystem() {
   echo "/dev/mapper/usrsapvg-usrsaplv /usr/sap xfs defaults 0 0" >> /etc/fstab
   echo "write to fstab end" >> /tmp/parameter.txt
   echo "filesystem creation completed" >> /tmp/parameter.txt
+  
+  lvextend -r -L+5G /dev/rootvg/rootlv
 }
 
 main::hana_config() {
