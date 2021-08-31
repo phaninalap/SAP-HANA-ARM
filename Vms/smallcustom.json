@@ -412,7 +412,7 @@
                             "fileUris": [
                                 "[concat(variables('baseUri'),'scripts/hana.sh')]"
                             ],
-                            "commandToExecute": "[concat('sh hana.sh \"', parameters('customUri'), '\" \"' , parameters('HanaVersion'), '\" \"' , parameters('vmUserName'), '\" \"', parameters('vmPassword'),'\" \"', parameters('HANASID'), '\" \"', parameters('HANANUMBER'), '\" \"', parameters('vmSize'), '\" \"', parameters('SubscriptionEmail'), '\" \"', parameters('SubscriptionID'),'\"  \"', parameters('SMTUri'),'\"')]"
+                            "commandToExecute": "[concat('bash hana.sh \"', parameters('customUri'), '\" \"' , parameters('HanaVersion'), '\" \"' , parameters('vmUserName'), '\" \"', parameters('vmPassword'),'\" \"', parameters('HANASID'), '\" \"', parameters('HANANUMBER'), '\" \"', parameters('vmSize'), '\" \"', parameters('SubscriptionEmail'), '\" \"', parameters('SubscriptionID'),'\"  \"', parameters('SMTUri'),'\"')]"
                         }
                     }
                 }
