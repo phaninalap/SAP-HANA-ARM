@@ -1,23 +1,23 @@
 set -x
 
-#Uri=${1}
-#HANAVER=${2}
-#HANAUSR=${3}
-#HANAPWD=${4}
-#HANASID=${5}
-#HANANUMBER=${6}
-#vmSize=${7}
-#SUBEMAIL=${8}
-#SUBID=${9}
-#SUBURL=${10}
+Uri=${1}
+HANAVER=${2}
+HANAUSR=${3}
+HANAPWD=${4}
+HANASID=${5}
+HANANUMBER=${6}
+vmSize=${7}
+SUBEMAIL=${8}
+SUBID=${9}
+SUBURL=${10}
 
- HANASID="HF2"
- HANNUMBER="00"
- HANAPWD="HP1nv3nt"
+ # HANASID="HF2"
+ # HANNUMBER="00"
+ # HANAPWD="HP1nv3nt"
  HANACOMP="server, client, studio, afl"
  SAPBITSDIR="/hana/data/sapbits"
  hanapackage="51054623"
- Uri="https://app0584storagedev.blob.core.windows.net/hanamedia" 
+ # Uri="https://app0584storagedev.blob.core.windows.net/hanamedia" 
 
 main::set_boot_parameters() {
 
