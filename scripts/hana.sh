@@ -286,7 +286,9 @@ fi
 chmod 777 /etc/smbcredentials/app0584sapstorage.cred
 
 sudo bash -c 'echo "//app0584sapstorage.file.core.windows.net/sapmedia /mnt/sapmedia cifs nofail,vers=3.0,credentials=/etc/smbcredentials/app0584sapstorage.cred,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
-sudo mount -t cifs //app0584sapstorage.file.core.windows.net/sapmedia /mnt/sapmedia -o 
+sudo mount -t cifs //app0584sapstorage.file.core.windows.net/sapmedia /mnt/sapmedia -o vers=3.0,credentials=/etc/smbcredentials/app0584sapstorage.cred,dir_mode=0777,file_mode=0777,serverino
+
+sleep 10
 
 if [ ! -d "/hana/data/sapbits" ]
  then
@@ -299,6 +301,7 @@ echo "copy and extract hana pkg"
   echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
   cp /mnt/sapmedia/linux/sap_hana/install/${hanapackage}.ZIP $SAPBITSDIR
+  sleep 60
   echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
   mkdir ${hanapackage}
