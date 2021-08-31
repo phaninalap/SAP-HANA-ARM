@@ -20,7 +20,6 @@ SUBURL=${10}
  # Uri="https://app0584storagedev.blob.core.windows.net/hanamedia" 
 
 main::set_boot_parameters() {
-
   ## disable selinux
   if [[ -e /etc/sysconfig/selinux ]]; then
     sed -ie 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
