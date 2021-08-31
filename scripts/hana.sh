@@ -273,23 +273,18 @@ main::hana_config() {
 main::hana_media() {
 #####################
 
-mkdir /mnt/resource/blobfusetmp -p
-chown root /mnt/resource/blobfusetmp 
-chmod 777 /mnt/resource/blobfusetmp
-mkdir /tmp/blobfuse_connection
-cd /tmp/blobfuse_connection
-touch /tmp/blobfuse_connection/fuse_connection.cfg
-chmod 600 /tmp/blobfuse_connection/fuse_connection.cfg
+sudo mkdir /mnt/sapmedia
+if [ ! -d "/etc/smbcredentials" ]; then
+sudo mkdir /etc/smbcredentials
+fi
+if [ ! -f "/etc/smbcredentials/app0584sapstorage.cred" ]; then
+    sudo bash -c 'echo "username=app0584sapstorage" >> /etc/smbcredentials/app0584sapstorage.cred'
+    sudo bash -c 'echo "password=3PR+EGDaDP6Co2B8t/funmyz9c4xblvIM9sCrQg9/SAhLTD3GYpf+hFITzXrVABuhgDMqGIkmrbeJs1hdhcr6A==" >> /etc/smbcredentials/app0584sapstorage.cred'
+fi
+sudo chmod 600 /etc/smbcredentials/app0584sapstorage.cred
 
-echo "Setting blobfuse config"
-  {
-    echo "accountName app0584storagedev"
-    echo "accountKey wLZWNuJ/anvAt6F19Y9Mm6yBjmoMhNjp+55tcVSuza+keB2on+X1HLwzVH4Gw7G0iF2x9DzxEjUIkJwaEXDw2g=="
-    echo "containerName hanamedia"
-  } >> /tmp/blobfuse_connection/fuse_connection.cfg
-cd / 
-mkdir sapmedia
-blobfuse /sapmedia --tmp-path=/mnt/resource/blobfusetmp  --config-file=/root/blobfuse_connection/fuse_connection.cfg -o attr_timeout=240 -o entry_timeout=240 -o negative_timeout=120 -o allow_other
+sudo bash -c 'echo "//app0584sapstorage.file.core.windows.net/sapmedia /mnt/sapmedia cifs nofail,vers=3.0,credentials=/etc/smbcredentials/app0584sapstorage.cred,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
+sudo mount -t cifs //app0584sapstorage.file.core.windows.net/sapmedia /mnt/sapmedia -o 
 
 if [ ! -d "/hana/data/sapbits" ]
  then
@@ -300,7 +295,7 @@ echo "copy and extract hana pkg"
   echo "${hanapackage}" >> /tmp/parameter.txt
   echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
-  cp /sapmedia/${hanapackage}.ZIP $SAPBITSDIR
+  cp /mnt/sapmedia/linux/sap_hana/install/${hanapackage}.ZIP $SAPBITSDIR
   echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
   mkdir ${hanapackage}
@@ -324,10 +319,10 @@ main::hana_update() {
 
   echo "HANA Update media copy"
   cd $SAPBITSDIR
-  cp /sapmedia/IMDB_SERVER20_056_0-80002031.SAR $SAPBITSDIR
-  cp /sapmedia/IMC_STUDIO2_256_0-80000321.SAR $SAPBITSDIR
-  cp /sapmedia/IMDB_AFL20_056_0-80001894.SAR $SAPBITSDIR
-  cp /sapmedia/IMDB_CLIENT20_009_28-80002082.SAR $SAPBITSDIR
+  cp /mnt/sapmedia/linux/sap_hana/update/IMDB_SERVER20_056_0-80002031.SAR $SAPBITSDIR
+  cp /mnt/sapmedia/linux/sap_hana/update/IMC_STUDIO2_256_0-80000321.SAR $SAPBITSDIR
+  cp /mnt/sapmedia/linux/sap_hana/update/IMDB_AFL20_056_0-80001894.SAR $SAPBITSDIR
+  cp /mnt/sapmedia/linux/sap_hana/update/IMDB_CLIENT20_009_28-80002082.SAR $SAPBITSDIR
   echo "HANA Update media copy completed"
 
   if [ "$(ls $SAPBITSDIR/IMDB_SERVER*.SAR)" ]; then
