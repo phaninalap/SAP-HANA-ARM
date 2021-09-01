@@ -1,3 +1,4 @@
+# HANA Single Node Setup
 set -x
 
 Uri=${1}
