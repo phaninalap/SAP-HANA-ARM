@@ -94,6 +94,19 @@
                 "description": "The management subnet prefix"
             }
         },
+	"StorageName": {
+            "type": "string",
+            "maxLength": 13,
+            "metadata": {
+                "description": "Storage Account Name"
+            }
+        },
+	"StorageKey": {
+            "type": "string",
+            "metadata": {
+                "description": "Storage Access key"
+            }
+        },
         "customURI": {
             "type": "string",
 	    "defaultValue": "https://sapmedia.blob.core.windows.net/hanamedia",
@@ -326,6 +339,12 @@
                     },               
                     "vmName": {
                         "value": "[parameters('vmName')]"
+                    },
+	            "StorageName": {
+                        "value": "[parameters('StorageName')]"
+                    },
+		    "StorageKey": {
+                        "value": "[parameters('StorageKey')]"
                     },
                     "customUri": {
                         "value": "[parameters('customUri')]"
