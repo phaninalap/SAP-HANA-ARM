@@ -107,6 +107,12 @@
                 "description": "Storage Access key"
             }
         },
+	"FileShare": {
+            "type": "string",
+            "metadata": {
+                "description": "File Share Name
+            }
+        },
         "customURI": {
             "type": "string",
 	    "defaultValue": "https://sapmedia.blob.core.windows.net/hanamedia",
@@ -345,6 +351,9 @@
                     },
 		    "StorageKey": {
                         "value": "[parameters('StorageKey')]"
+                    },
+		    "FileShare": {
+                        "value": "[parameters('FileShare')]"
                     },
                     "customUri": {
                         "value": "[parameters('customUri')]"
