@@ -110,7 +110,7 @@
 	"FileShare": {
             "type": "string",
             "metadata": {
-                "description": "File Share Name
+                "description": "File Share Name"
             }
         },
         "customURI": {
