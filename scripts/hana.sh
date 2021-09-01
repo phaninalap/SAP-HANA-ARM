@@ -9,7 +9,10 @@ HANANUMBER=${6}
 vmSize=${7}
 SUBEMAIL=${8}
 SUBID=${9}
-SUBURL=${10}
+STGNAME=${10}
+STGKEY={11}
+FILESHR={12}
+SUBURL=${13}
 
  # HANASID="HF2"
  # HANNUMBER="00"
@@ -282,21 +285,21 @@ main::hana_config() {
 main::hana_media() {
 #####################
 
-mkdir /mnt/sapmedia
-chmod -R 777 /mnt/sapmedia
+mkdir /mnt/$FILESHR
+chmod -R 777 /mnt/$FILESHR
 
 if [ ! -d "/etc/smbcredentials" ]; then
 mkdir /etc/smbcredentials
 chmod -R 777 /etc/smbcredentials
 fi
-if [ ! -f "/etc/smbcredentials/app0584sapstorage.cred" ]; then
-    bash -c 'echo "username=app0584sapstorage" >> /etc/smbcredentials/app0584sapstorage.cred'
-    bash -c 'echo "password=3PR+EGDaDP6Co2B8t/funmyz9c4xblvIM9sCrQg9/SAhLTD3GYpf+hFITzXrVABuhgDMqGIkmrbeJs1hdhcr6A==" >> /etc/smbcredentials/app0584sapstorage.cred'
+if [ ! -f "/etc/smbcredentials/$STGNAME.cred" ]; then
+    bash -c 'echo "username=$STGNAME" >> /etc/smbcredentials/$STGNAME.cred'
+    bash -c 'echo "password=$STGKEY" >> /etc/smbcredentials/$STGNAME.cred'
 fi
-chmod 777 /etc/smbcredentials/app0584sapstorage.cred
+chmod 777 /etc/smbcredentials/$STGNAME.cred
 
-sudo bash -c 'echo "//app0584sapstorage.file.core.windows.net/sapmedia /mnt/sapmedia cifs nofail,vers=3.0,credentials=/etc/smbcredentials/app0584sapstorage.cred,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
-sudo mount -t cifs //app0584sapstorage.file.core.windows.net/sapmedia /mnt/sapmedia -o vers=3.0,credentials=/etc/smbcredentials/app0584sapstorage.cred,dir_mode=0777,file_mode=0777,serverino
+sudo bash -c 'echo "//$STGNAME.file.core.windows.net/$FILESHR /mnt/$FILESHR cifs nofail,vers=3.0,credentials=/etc/smbcredentials/$STGNAME.cred,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
+sudo mount -t cifs //$STGNAME.file.core.windows.net/$FILESHR /mnt/$FILESHR -o vers=3.0,credentials=/etc/smbcredentials/$STGNAME.cred,dir_mode=0777,file_mode=0777,serverino
 
 sleep 10
 
@@ -310,7 +313,7 @@ echo "copy and extract hana pkg"
   echo "${hanapackage}" >> /tmp/parameter.txt
   echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
-  cp /mnt/sapmedia/linux/sap_hana/install/${hanapackage}.ZIP $SAPBITSDIR
+  cp /mnt/$FILESHR/linux/sap_hana/install/${hanapackage}.ZIP $SAPBITSDIR
   sleep 60
   echo "hana download start" >> /tmp/parameter.txt
   cd $SAPBITSDIR
@@ -335,10 +338,10 @@ main::hana_update() {
 
   echo "HANA Update media copy"
   cd $SAPBITSDIR
-  cp /mnt/sapmedia/linux/sap_hana/update/IMDB_SERVER20_056_0-80002031.SAR $SAPBITSDIR
-  cp /mnt/sapmedia/linux/sap_hana/update/IMC_STUDIO2_256_0-80000321.SAR $SAPBITSDIR
-  cp /mnt/sapmedia/linux/sap_hana/update/IMDB_AFL20_056_0-80001894.SAR $SAPBITSDIR
-  cp /mnt/sapmedia/linux/sap_hana/update/IMDB_CLIENT20_009_28-80002082.SAR $SAPBITSDIR
+  cp /mnt/$FILESHR/linux/sap_hana/update/IMDB_SERVER20_056_0-80002031.SAR $SAPBITSDIR
+  cp /mnt/$FILESHR/linux/sap_hana/update/IMC_STUDIO2_256_0-80000321.SAR $SAPBITSDIR
+  cp /mnt/$FILESHR/linux/sap_hana/update/IMDB_AFL20_056_0-80001894.SAR $SAPBITSDIR
+  cp /mnt/$FILESHR/linux/sap_hana/update/IMDB_CLIENT20_009_28-80002082.SAR $SAPBITSDIR
   echo "HANA Update media copy completed"
 
   if [ "$(ls $SAPBITSDIR/IMDB_SERVER*.SAR)" ]; then
