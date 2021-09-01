@@ -29,10 +29,16 @@
                 "description": "Storage Account Name"
             }
         },
-	    "StorageKey": {
+	"StorageKey": {
             "type": "string",
             "metadata": {
                 "description": "Storage Access key"
+            }
+        },
+	"FileShare": {
+            "type": "string",
+            "metadata": {
+                "description": "File Share Name"
             }
         },
         "customUri": {
@@ -425,7 +431,7 @@
                             "fileUris": [
                                 "[concat(variables('baseUri'),'scripts/hana.sh')]"
                             ],
-                            "commandToExecute": "[concat('bash hana.sh \"', parameters('customUri'), '\" \"' , parameters('HanaVersion'), '\" \"' , parameters('vmUserName'), '\" \"', parameters('vmPassword'),'\" \"', parameters('HANASID'), '\" \"', parameters('HANANUMBER'), '\" \"', parameters('vmSize'), '\" \"', parameters('SubscriptionEmail'), '\" \"', parameters('SubscriptionID'),'\"  \"', parameters('StorageName'),'\"  \"', parameters('StorageKey'),'\"  \"', parameters('SMTUri'),'\"')]"
+                            "commandToExecute": "[concat('bash hana.sh \"', parameters('customUri'), '\" \"' , parameters('HanaVersion'), '\" \"' , parameters('vmUserName'), '\" \"', parameters('vmPassword'),'\" \"', parameters('HANASID'), '\" \"', parameters('HANANUMBER'), '\" \"', parameters('vmSize'), '\" \"', parameters('SubscriptionEmail'), '\" \"', parameters('SubscriptionID'),'\"  \"', parameters('StorageName'),'\"  \"', parameters('StorageKey'),'\"  \"', parameters('FileShare'),'\"  \"', parameters('SMTUri'),'\"')]"
                         }
                     }
                 }
