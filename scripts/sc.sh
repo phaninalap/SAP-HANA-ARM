@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HANA = ${1}
+HANA=${1}
 
 echo "This is a test script."
 
