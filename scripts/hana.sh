@@ -1,19 +1,19 @@
 # HANA Single Node Setup
 set -x
 
-Uri=${1}
-HANAVER=${2}
-HANAUSR=${3}
-HANAPWD=${4}
-HANASID=${5}
-HANANUMBER=${6}
-vmSize=${7}
-SUBEMAIL=${8}
-SUBID=${9}
-STGNAME=${10}
-STGKEY=${11}
-FILESHR=${12}
-SUBURL=${13}
+#Uri=${1}
+HANAPWD=${1}
+HANASID=${2}
+HANANUMBER=${3}
+STGNAME=${4}
+STGKEY=${5}
+FILESHR=${6}
+#HANAVER=${2}
+#HANAUSR=${3}
+#vmSize=${7}
+#SUBEMAIL=${8}
+#SUBID=${9}
+#SUBURL=${13}
 
  # HANASID="HF2"
  # HANNUMBER="00"
