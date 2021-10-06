@@ -378,10 +378,10 @@ main::hana_update() {
 
   echo "HANA Update media copy"
   cd $SAPBITSDIR
-  cp /mnt/$FILESHR/linux/sap_hana/update/IMDB_SERVER20_056_0-80002031.SAR $SAPBITSDIR
-  cp /mnt/$FILESHR/linux/sap_hana/update/IMC_STUDIO2_256_0-80000321.SAR $SAPBITSDIR
-  cp /mnt/$FILESHR/linux/sap_hana/update/IMDB_AFL20_056_0-80001894.SAR $SAPBITSDIR
-  cp /mnt/$FILESHR/linux/sap_hana/update/IMDB_CLIENT20_009_28-80002082.SAR $SAPBITSDIR
+  cp /mnt/$FILESHR/linux/sap_hana/update/Rev_57/IMDB_SERVER20_057_0-80002031.SAR $SAPBITSDIR
+  cp /mnt/$FILESHR/linux/sap_hana/update/Rev_57/IMDB_EPMMDS_2057_0-80002211.SAR $SAPBITSDIR
+  cp /mnt/$FILESHR/linux/sap_hana/update/Rev_57/IMDB_AFL20_057_0-80001894.SAR $SAPBITSDIR
+  cp /mnt/$FILESHR/linux/sap_hana/update/Rev_57/IMDB_CLIENT20_010_9-80002082.SAR $SAPBITSDIR
   echo "HANA Update media copy completed"
 
   if [ "$(ls $SAPBITSDIR/IMDB_SERVER*.SAR)" ]; then
