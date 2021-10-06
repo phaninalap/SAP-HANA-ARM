@@ -11,7 +11,7 @@ FILESHR=${6}
  # HANASID="HF2"
  # HANNUMBER="00"
  # HANAPWD="HP1nv3nt"
- HANACOMP="server, client, studio, afl"
+ HANACOMP="server, client, studio, afl, epmmds"
  SAPBITSDIR="/hana/data/sapbits"
  hanapackage="51054623"
  # Uri="https://app0584storagedev.blob.core.windows.net/hanamedia" 
@@ -304,7 +304,7 @@ main::hana_config() {
 # HANASID="HF2"
 # HANNUMBER="00"
 # HANAPWD="HP1nv3nt"
- HANACOMP="server, client, studio, afl"
+ HANACOMP="server, client, studio, afl, epmmds"
 
   ## create hana_install.cfg file
   {
