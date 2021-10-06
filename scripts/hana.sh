@@ -1,6 +1,13 @@
 # HANA Single Node Setup
 set -x
 
+HANAPWD=${1}
+HANASID=${2}
+HANANUMBER=${3}
+STGNAME=${4}
+STGKEY=${5}
+FILESHR=${6}
+
  # HANASID="HF2"
  # HANNUMBER="00"
  # HANAPWD="HP1nv3nt"
@@ -250,8 +257,6 @@ main::create_filesystem() {
   PHYSVOLUMES=1
   STRIPESIZE=32
   lvcreate -i$PHYSVOLUMES -I$STRIPESIZE -l 100%FREE -n loglv logvg
-  mount -t xfs /dev/logvg/loglv /hana/log 
-  echo "/dev/mapper/logvg-loglv /hana/log xfs defaults 0 0" >> /etc/fstab
 
   mkfs.xfs /dev/datavg/datalv
   mkfs.xfs /dev/logvg/loglv
@@ -265,10 +270,12 @@ main::create_filesystem() {
   mount -t xfs /dev/backupvg/backuplv /hana/backup 
   mount -t xfs /dev/usrsapvg/usrsaplv /usr/sap
   mount -t xfs /dev/datavg/datalv /hana/data
+  mount -t xfs /dev/logvg/loglv /hana/log 
   echo "mounthanashared end" >> /tmp/parameter.txt
 
   echo "write to fstab start" >> /tmp/parameter.txt
   echo "/dev/mapper/datavg-datalv /hana/data xfs defaults 0 0" >> /etc/fstab
+  echo "/dev/mapper/logvg-loglv /hana/log xfs defaults 0 0" >> /etc/fstab
   echo "/dev/mapper/sharedvg-sharedlv /hana/shared xfs defaults 0 0" >> /etc/fstab
   echo "/dev/mapper/backupvg-backuplv /hana/backup xfs defaults 0 0" >> /etc/fstab
   echo "/dev/mapper/usrsapvg-usrsaplv /usr/sap xfs defaults 0 0" >> /etc/fstab
