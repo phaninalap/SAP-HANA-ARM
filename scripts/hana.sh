@@ -333,8 +333,8 @@ mkdir /etc/smbcredentials
 chmod -R 777 /etc/smbcredentials
 fi
 if [ ! -f "/etc/smbcredentials/$STGNAME.cred" ]; then
-    bash -c 'echo "username=$STGNAME" >> /etc/smbcredentials/$STGNAME.cred'
-    bash -c 'echo "password=$STGKEY" >> /etc/smbcredentials/$STGNAME.cred'
+    echo "username=$STGNAME" >> /etc/smbcredentials/$STGNAME.cred
+    echo "password=$STGKEY" >> /etc/smbcredentials/$STGNAME.cred
 fi
 chmod 777 /etc/smbcredentials/$STGNAME.cred
 
