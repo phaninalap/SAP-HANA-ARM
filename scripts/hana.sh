@@ -401,4 +401,3 @@ main::hana_media
 main::hana_config
 main::hana_install
 main::hana_update
-# main::reboot
