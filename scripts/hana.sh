@@ -393,6 +393,7 @@ main::hana_update() {
 main::set_boot_parameters
 main::get_os_version
 main::install_packages
+main::limts_tmp_excludes
 main::set_kernel_parameters
 main::create_swap
 main::create_filesystem
