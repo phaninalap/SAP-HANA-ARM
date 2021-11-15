@@ -339,7 +339,7 @@ fi
 chmod 777 /etc/smbcredentials/$STGNAME.cred
 
 sudo bash -c 'echo "//$STGNAME.file.core.windows.net/$FILESHR /mnt/$FILESHR cifs nofail,vers=3.0,credentials=/etc/smbcredentials/$STGNAME.cred,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
-sudo mount -t cifs //$STGNAME.file.core.windows.net/$FILESHR /mnt/$FILESHR -o vers=3.0,credentials=/etc/smbcredentials/$STGNAME.cred,dir_mode=0777,file_mode=0777,serverino
+sudo mount -t 'cifs //$STGNAME.file.core.windows.net/$FILESHR /mnt/$FILESHR -o vers=3.0,credentials=/etc/smbcredentials/$STGNAME.cred,dir_mode=0777,file_mode=0777,serverino'
 
 sleep 10
 
