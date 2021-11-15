@@ -198,8 +198,8 @@ reboot
 
 main::create_swap() {
 
-sed "s/ResourceDisk.Format=n/ResourceDisk.Format=y/g" /etc/waagent.conf
-sed "s/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g" /etc/waagent.conf
+sed -i 's/ResourceDisk.Format=n/ResourceDisk.Format=y/g' /etc/waagent.conf
+sed -i 's/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g' /etc/waagent.conf
 
 # service waagent restart
 }
